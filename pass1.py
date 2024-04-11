@@ -89,10 +89,10 @@ def run_pass1():
             line = file.readline()
             continue
     # Print the needed information
-    print('PRGLTH = ', PRGLTH)
-    print('PRGNAME = ', PRGNAME)
-    print('LOCCTR = ', PRGNAME)
-    print('SYBTAB: ')
+    print('PRGNAME =', PRGNAME)
+    print('PRGLTH =', PRGLTH)
+    print('LOCCTR =', LOCCTR)
+    print('SYBTAB:')
     print('  ', helper.add_end_spaces('SYMBOL', 10), '|',
           helper.add_end_spaces('ADDRESS', 4))
     print('   --------------------')
