@@ -31,22 +31,14 @@ def run_pass1():
                 START_ADDRESS = operand
                 PRGNAME = label
                 LOCCTR = START_ADDRESS
-                write_file.write('{} {} {} {}\n'.format(
-                    helper.add_end_spaces(LOCCTR, 4),
-                    helper.add_end_spaces(label, 10),
-                    helper.add_end_spaces(opcode, 9),
-                    helper.add_end_spaces(operand, 18)
-                ))
+                helper.print_to_intermediate(
+                    LOCCTR, label, opcode, operand, write_file)
                 line = file.readline()
             # Anything not start and not end (Do Operation)
             elif opcode != 'END':
                 # Write information on intermediate file
-                write_file.write('{} {} {} {}\n'.format(
-                    helper.add_end_spaces(LOCCTR, 4),
-                    helper.add_end_spaces(label, 10),
-                    helper.add_end_spaces(opcode, 9),
-                    helper.add_end_spaces(operand, 18)
-                ))
+                helper.print_to_intermediate(
+                    LOCCTR, label, opcode, operand, write_file)
                 # Check the label
                 if label != '':
                     if (label in SYBTAB):
@@ -76,12 +68,9 @@ def run_pass1():
                 line = file.readline()
             else:
                 # End Directive
-                write_file.write('{} {} {} {}\n'.format(
-                    helper.add_end_spaces(LOCCTR, 4),
-                    helper.add_end_spaces(label, 10),
-                    helper.add_end_spaces(opcode, 9),
-                    helper.add_end_spaces(operand, 18)
-                ))
+                helper.print_to_intermediate(
+                    LOCCTR, label, opcode, operand, write_file)
+
                 PRGLTH = helper.change_from_decimal_to_hex(helper.change_from_hex_to_decimal(
                     LOCCTR) - helper.change_from_hex_to_decimal(START_ADDRESS))
                 break
