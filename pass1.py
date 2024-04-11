@@ -1,20 +1,17 @@
 import helper
-import sys
-
-source_file = sys.argv[1]
-destination_file = sys.argv[2]
-opcode_table = helper.read_opcode_table()
 
 
-def run_pass1():
+def run_pass1(source_file, destination_file):
     '''Simulate the PASS1 in SIC assembler'''
     # Read and Write files
     file = open(str(source_file), 'r')
+    print(destination_file)
     write_file = open(str(destination_file), 'w')
     # Read first line
     line = file.readline()
+    opcode_table = helper.read_opcode_table()
     # Define the needed variables
-    LOCCTR = '0000'
+    LOCCTR = '000000'
     START_ADDRESS = ''
     SYBTAB = {}
     PRGLTH = ''
@@ -75,6 +72,7 @@ def run_pass1():
                     LOCCTR) - helper.change_from_hex_to_decimal(START_ADDRESS))
                 break
         else:
+            write_file.write(line)
             line = file.readline()
             continue
     # Print the needed information
@@ -94,7 +92,6 @@ def run_pass1():
     if ERROR != '':
         print('Error(s): ')
         print(ERROR)
+        ERROR = 'Error(s): \n' + ERROR
 
-
-# run Pass1
-run_pass1()
+    return PRGNAME, PRGLTH, LOCCTR, SYBTAB, ERROR
