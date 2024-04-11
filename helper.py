@@ -1,3 +1,6 @@
+from io import TextIOWrapper
+
+
 map_from_char_to_number = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
                            '8': 8, '9': 9, 'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
 map_from_number_to_char = ['0', '1', '2', '3', '4', '5', '6', '7',
@@ -59,3 +62,12 @@ def add_end_spaces(value: str, required_length: int):
     while len(value) < required_length:
         value += ' '
     return value
+
+
+def print_to_intermediate(LOCCTR: str, label: str, opcode: str, operand: str, write_file: TextIOWrapper):
+    write_file.write('{} {} {} {}\n'.format(
+        add_end_spaces(LOCCTR, 4),
+        add_end_spaces(label, 10),
+        add_end_spaces(opcode, 9),
+        add_end_spaces(operand, 18)
+    ))
