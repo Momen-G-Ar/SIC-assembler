@@ -96,4 +96,4 @@ def run_pass1(source_file, destination_file):
         print(ERROR)
         ERROR = 'Error(s): \n' + ERROR
 
-    return START_ADDRESS, PRGNAME, PRGLTH, LOCCTR, SYBTAB, ERROR
+    return PRGNAME, PRGLTH, LOCCTR, SYBTAB, ERROR

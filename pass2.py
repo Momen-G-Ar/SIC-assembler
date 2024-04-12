@@ -5,7 +5,7 @@ source_file = sys.argv[1]
 destination_file = sys.argv[2]
 
 
-def run_pass2(START_ADDRESS: str, PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB: dict, source_file=source_file, destination_file=destination_file):
+def run_pass2(PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB: dict, source_file=source_file, destination_file=destination_file):
     '''Simulate the PASS2 in SIC assembler'''
     # Read and Write files
     file = open(str(source_file), 'r')
