@@ -13,6 +13,7 @@ def run_pass2(START_ADDRESS: str, PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB
     write_file_listing = open(str('listing.lst'), 'w')
     opcode_table = helper.read_opcode_table()
     ERROR = ''
+    err = ''
     symbol_value = ''
     object_code = ''
 
@@ -25,7 +26,7 @@ def run_pass2(START_ADDRESS: str, PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB
         header = helper.generate_header_record(PRGNAME, operand, PRGLTH)
         write_file.write(header)
         helper.print_to_listing(locctr, label, opcode,
-                                operand, '', write_file_listing)
+                                operand, '', '', write_file_listing)
         line = file.readline()
 
     text_record = ''  # contains the text record: max is 60 half bytes
@@ -39,8 +40,11 @@ def run_pass2(START_ADDRESS: str, PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB
                 if (operand != ''):
                     if (operand in SYBTAB):
                         symbol_value = SYBTAB[operand]
+                    elif operand[:-2] in SYBTAB:
+                        symbol_value = SYBTAB[operand[:-2]]
                     else:
-                        ERROR += ' undefined symbol {}\n'.format(label)
+                        ERROR += ' undefined symbol {}\n'.format(operand)
+                        err = 'undefined symbol {}\n'.format(operand)
                 else:
                     symbol_value = '0000'
                 # check if the mode is indexed or not
@@ -77,7 +81,9 @@ def run_pass2(START_ADDRESS: str, PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB
                     object_code = ''
                     write_file.write(line_in_obj)
             helper.print_to_listing(locctr, label, opcode,
-                                    operand, object_code, write_file_listing)
+                                    operand, object_code, err, write_file_listing)
+            err = ''
         line = file.readline()
     end = helper.generate_end_record(operand, SYBTAB)
     write_file.write(end)
+    return ERROR

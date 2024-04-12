@@ -13,3 +13,7 @@ if (ERROR1 == ''):
                              SYBTAB, intermediate_file, object_file)
     if (ERROR2 == ''):
         print('Done\n')
+    else:
+        print('Error in Pass2: \n', ERROR2)
+else:
+    print('Error in Pass1: \n', ERROR1)

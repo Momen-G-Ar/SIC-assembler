@@ -56,7 +56,7 @@ def add_to_hex(hex_number: str, value: int):
     return change_from_decimal_to_hex(sum)
 
 
-def add_end_spaces(value: str, required_length: int):
+def add_end_spaces(value: str, required_length: int = 0):
     value = value.strip()
     while len(value) < required_length:
         value += ' '
@@ -144,14 +144,19 @@ def generate_end_record(operand, SYBTAB):
         return 'E'
 
 
-def print_to_listing(LOCCTR: str = '', label: str = '', opcode: str = '', operand: str = '', object_code: str = '', write_file: TextIOWrapper = ''):
-    write_file.write('{} {} {} {} {}\n'.format(
+def print_to_listing(LOCCTR: str = '', label: str = '', opcode: str = '', operand: str = '', object_code: str = '', error: str = '', write_file: TextIOWrapper = ''):
+    line = '{} {} {} {} {}'.format(
         add_end_spaces(LOCCTR, 4),
         add_end_spaces(label, 10),
         add_end_spaces(opcode, 9),
         add_end_spaces(operand, 18),
-        add_end_spaces(object_code, 6)
-    ))
+        add_end_spaces(object_code, 6),
+    )
+    if (error != ''):
+        line += ' Error: ' + error + '\n'
+    else:
+        line += '\n'
+    write_file.write(line)
 
 
 def get_hex_from_chars(chars: str):

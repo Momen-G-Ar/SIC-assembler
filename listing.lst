@@ -1,7 +1,7 @@
 0000 PROG       START                              
 0000            LDX       ZERO               040025
-0003 MOVECH     LDCH      STR1,X             508025
-0006            STCH      STR2,X             548025
+0003 MOVECH     LDCH      STR1,X             50800F
+0006            STCH      STR2,X             54801A
 0009            TIX       ELEVEN             2C0028
 000C            JLT       MOVECH             380003
 000F STR1       BYTE      C'TEST STRING'     5445535420535452494E47
