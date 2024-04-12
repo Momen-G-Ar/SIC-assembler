@@ -1,8 +1,4 @@
 import helper as helper
-import sys
-
-source_file = sys.argv[1]
-destination_file = sys.argv[2]
 
 
 def run_pass2(PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB: dict, source_file=source_file, destination_file=destination_file):
@@ -12,10 +8,14 @@ def run_pass2(PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB: dict, source_file=
     write_file = open(str(destination_file), 'w')
     write_file_listing = open(str('listing.lst'), 'w')
     opcode_table = helper.read_opcode_table()
+
+    # Define the needed variables
     ERROR = ''
     err = ''
     symbol_value = ''
     object_code = ''
+    text_record = ''  # contains the text record: max is 60 half bytes
+    locctr_of_text_record = LOCCTR
 
     # Read first line
     line = file.readline()
@@ -29,12 +29,13 @@ def run_pass2(PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB: dict, source_file=
                                 operand, '', '', write_file_listing)
         line = file.readline()
 
-    text_record = ''  # contains the text record: max is 60 half bytes
-    locctr_of_text_record = LOCCTR
     while (opcode != 'END' and line != ''):
+        # Read line by line from the intermediate file
         locctr, label, opcode, operand = helper.get_info_from_pass2_line(line)
+        # If new text record --> save it location counter
         if (len(text_record) == 0):
             locctr_of_text_record = locctr
+        # If not comment go
         if (line[0] != '.'):
             if (opcode in opcode_table):
                 if (operand != ''):
@@ -59,30 +60,36 @@ def run_pass2(PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB: dict, source_file=
                     text_record, object_code, write_file, locctr, locctr_of_text_record)
 
             elif (opcode == 'BYTE' or opcode == 'WORD'):
-                if (operand[0] == 'C'):  # it is BYTE with chars
+                # it is BYTE with chars
+                if (operand[0] == 'C'):
                     object_code = helper.get_hex_from_chars(operand)
                     locctr_of_text_record, text_record = helper.add_to_text_record(
                         text_record, object_code, write_file, locctr, locctr_of_text_record)
-                elif (operand[0] == 'X'):  # it is BYTE with Hex
+                # it is BYTE with Hex
+                elif (operand[0] == 'X'):
                     object_code = operand[2: -1]
                     locctr_of_text_record, text_record = helper.add_to_text_record(
                         text_record, object_code, write_file, locctr, locctr_of_text_record)
-                else:  # it is WORD
+                # it is WORD
+                else:
                     object_code = helper.change_from_decimal_to_hex(
                         int(operand))
                     object_code = ('0' * (6 - len(object_code))) + object_code
                     locctr_of_text_record, text_record = helper.add_to_text_record(
                         text_record, object_code, write_file, locctr, locctr_of_text_record)
-            else:  # empty space in object code
+            # Empty space in object code
+            else:
                 if (len(text_record)):
                     line_in_obj = helper.generate_text_record(
                         locctr_of_text_record, len(text_record), text_record)
                     text_record = ''
                     object_code = ''
                     write_file.write(line_in_obj)
+            # Print into listing file
             helper.print_to_listing(locctr, label, opcode,
                                     operand, object_code, err, write_file_listing)
             err = ''
+        # Read new line
         line = file.readline()
     end = helper.generate_end_record(operand, SYBTAB)
     write_file.write(end)

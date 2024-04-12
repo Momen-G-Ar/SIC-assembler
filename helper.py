@@ -1,6 +1,5 @@
 from io import TextIOWrapper
 
-
 # <---------- Common Helpers ---------->
 map_from_char_to_number = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
                            '8': 8, '9': 9, 'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
@@ -21,7 +20,8 @@ def read_opcode_table():
     return opcode_table
 
 
-def add_end_spaces(value: str, required_length: int):
+def add_end_spaces(value: str, required_length: int = 0):
+    '''Add spaces at the end of a string as needed length'''
     value = value.strip()
     while len(value) < required_length:
         value += ' '
@@ -29,6 +29,7 @@ def add_end_spaces(value: str, required_length: int):
 
 
 def change_from_decimal_to_hex(value: int):
+    '''Convert decimal value to hexadecimal value'''
     hex_value = ''
     while value > 0:
         rem = int(value % 16)
@@ -41,6 +42,7 @@ def change_from_decimal_to_hex(value: int):
 
 
 def change_from_hex_to_decimal(hex: str):
+    '''Convert hexadecimal value to decimal value'''
     sum = 0
     ind = 0
     reversed_str = hex[::-1]
@@ -51,21 +53,16 @@ def change_from_hex_to_decimal(hex: str):
 
 
 def add_to_hex(hex_number: str, value: int):
+    '''Add decimal value to hexadecimal value'''
     sum = change_from_hex_to_decimal(hex_number)
     sum += value
     return change_from_decimal_to_hex(sum)
 
-
-def add_end_spaces(value: str, required_length: int = 0):
-    value = value.strip()
-    while len(value) < required_length:
-        value += ' '
-    return value
-
-
 # <---------- Pass #1 Helpers ---------->
+
+
 def get_info_from_pass1_line(line: str):
-    '''Extract the src code line information'''
+    '''Extract the src code line information for Pass1'''
     label = line[0:10].strip()
     opcode = line[11:20].strip()
     operand = line[21:39].replace('\n', '').strip()
@@ -74,6 +71,7 @@ def get_info_from_pass1_line(line: str):
 
 
 def print_to_intermediate(LOCCTR: str, label: str, opcode: str, operand: str, write_file: TextIOWrapper):
+    '''Print values into intermediate file as needed with specific spaces'''
     write_file.write('{} {} {} {}\n'.format(
         add_end_spaces(LOCCTR, 4),
         add_end_spaces(label, 10),
@@ -84,7 +82,7 @@ def print_to_intermediate(LOCCTR: str, label: str, opcode: str, operand: str, wr
 
 # <---------- Pass #2 Helpers ---------->
 def get_info_from_pass2_line(line: str):
-    '''Extract the src code line information'''
+    '''Extract the src code line information for Pass2'''
     locctr = line[0:5].strip()
     label = line[5:16].strip()
     opcode = line[16:26].strip()
@@ -99,6 +97,7 @@ def add_indexed_to_hex(hex: str):
 
 
 def generate_header_record(PRGNAME: str, START_ADDRESS: str, PRGLTH: str):
+    '''Make the header record to be printed into `example.obj` file'''
     start = START_ADDRESS
     length = PRGLTH
     while len(start) < 6:
@@ -111,6 +110,7 @@ def generate_header_record(PRGNAME: str, START_ADDRESS: str, PRGLTH: str):
 
 
 def generate_text_record(locctr: str, length: int, object_code: str):
+    '''Make the text record to be printed into `example.obj` file'''
     length_in_hex = change_from_decimal_to_hex(length / 2)
     while len(locctr) < 6:
         locctr = '0' + locctr
@@ -118,6 +118,7 @@ def generate_text_record(locctr: str, length: int, object_code: str):
 
 
 def add_to_text_record(text_record: str, object_code: str, write_file: TextIOWrapper, locctr: str, locctr_of_text_record: str):
+    '''Try to add more object code to text record and handle if it is full'''
     if (len(text_record) + len(object_code) <= 60):
         text_record += object_code
     else:
@@ -130,6 +131,7 @@ def add_to_text_record(text_record: str, object_code: str, write_file: TextIOWra
 
 
 def generate_end_record(operand, SYBTAB):
+    '''Make the end record to be printed into `example.obj` file'''
     if (operand in SYBTAB):
         START_ADDRESS = SYBTAB[operand]
     else:
@@ -143,6 +145,7 @@ def generate_end_record(operand, SYBTAB):
 
 
 def print_to_listing(LOCCTR: str = '', label: str = '', opcode: str = '', operand: str = '', object_code: str = '', error: str = '', write_file: TextIOWrapper = ''):
+    '''Print values into listing file `example.lst`'''
     line = '{} {} {} {} {}'.format(
         add_end_spaces(LOCCTR, 4),
         add_end_spaces(label, 10),
@@ -158,6 +161,7 @@ def print_to_listing(LOCCTR: str = '', label: str = '', opcode: str = '', operan
 
 
 def get_hex_from_chars(chars: str):
+    '''Convert the characters in English language into Hexadecimals'''
     hex = ''
     chars = chars[2: -1]
     for char in chars:

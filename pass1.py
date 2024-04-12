@@ -90,10 +90,4 @@ def run_pass1(source_file, destination_file):
               helper.add_end_spaces(key, 10), '|',
               helper.add_end_spaces(value, 4),
               )
-    # Print error if it occurs
-    if ERROR != '':
-        print('Error(s): ')
-        print(ERROR)
-        ERROR = 'Error(s): \n' + ERROR
-
     return PRGNAME, PRGLTH, LOCCTR, SYBTAB, ERROR
