@@ -17,7 +17,7 @@ This code simulate the operation of translating assembly code into machine code 
 ## Install and Run
 
 -   Install git repository: `git clone https://github.com/Momen-G-Ar/SIC-Assembler.git`
--   Change the working directory to be the project directory: `cd SIC-Assembler`
+-   Change the working directory to be the project directory: `cd SIC-Assembler/src`
 -   Try to write your own tests
 -   To run the assembler you should:
     -   Install Python3 on you computer
