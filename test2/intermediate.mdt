@@ -1,0 +1,20 @@
+.......... ......... ..................
+.       MAIN SUBROUTINE
+.......... ......... ..................
+1000 OPERAT     START     1000              
+1000            LDA       ALPHA             
+1003            ADD       INCR              
+1006            SUB       ONE               
+1009            STA       BETA              
+100C            LDA       GAMMA             
+100F            ADD       INCR              
+1012            SUB       ONE               
+1015            STA       DELTA             
+1018 ONE        WORD      1                 
+.
+101B ALPHA      RESW      1                 
+101E BETA       RESW      1                 
+1021 GAMMA      RESW      1                 
+1024 DELTA      RESW      1                 
+1027 INCR       RESW      1                 
+102A            END       FIRST             
