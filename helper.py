@@ -109,8 +109,6 @@ def generate_header_record(PRGNAME: str, START_ADDRESS: str, PRGLTH: str):
         + '^' + add_end_spaces(start, 6) \
         + '^' + add_end_spaces(length, 6) + '\n'
 
-#######
-
 
 def generate_text_record(locctr: str, length: int, object_code: str):
     length_in_hex = change_from_decimal_to_hex(length / 2)
