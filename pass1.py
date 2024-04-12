@@ -12,7 +12,7 @@ def run_pass1(source_file, destination_file):
     opcode_table = helper.read_opcode_table()
     # Define the needed variables
     LOCCTR = '000000'
-    START_ADDRESS = ''
+    START_ADDRESS = '0000'
     SYBTAB = {}
     PRGLTH = ''
     ERROR = ''
@@ -25,7 +25,8 @@ def run_pass1(source_file, destination_file):
                 line)
             # The start directive
             if opcode == 'START':
-                START_ADDRESS = operand
+                if (operand):
+                    START_ADDRESS = operand
                 PRGNAME = label
                 LOCCTR = START_ADDRESS
                 helper.print_to_intermediate(
@@ -68,15 +69,16 @@ def run_pass1(source_file, destination_file):
                 helper.print_to_intermediate(
                     LOCCTR, label, opcode, operand, write_file)
 
-                PRGLTH = helper.change_from_decimal_to_hex(helper.change_from_hex_to_decimal(
-                    LOCCTR) - helper.change_from_hex_to_decimal(START_ADDRESS))
                 break
         else:
             write_file.write(line)
             line = file.readline()
             continue
+    PRGLTH = helper.change_from_decimal_to_hex(helper.change_from_hex_to_decimal(
+        LOCCTR) - helper.change_from_hex_to_decimal(START_ADDRESS))
     # Print the needed information
     print('PRGNAME =', PRGNAME)
+    print('START ADDRESS =', START_ADDRESS)
     print('PRGLTH =', PRGLTH)
     print('LOCCTR =', LOCCTR)
     print('SYBTAB:')
