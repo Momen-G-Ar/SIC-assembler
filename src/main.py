@@ -1,5 +1,5 @@
-import pass1 as pass1
-import pass2 as pass2
+import pass1
+import pass2
 import sys
 
 source_file = sys.argv[1]
