@@ -51,4 +51,4 @@ WLOOP      TD        OUTPUT
            JLT       WLOOP
            RSUB
 OUTPUT     BYTE      X'05'
-           END
+           END       FIRST

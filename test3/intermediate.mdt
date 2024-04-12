@@ -1,0 +1,16 @@
+.......... ......... ..................
+.       MAIN SUBROUTINE
+.......... ......... ..................
+0000 PROG       START                       
+0000            LDX       ZERO              
+0003 MOVECH     LDCH      STR1,X            
+0006            STCH      STR2,X            
+0009            TIX       ELEVEN            
+000C            JLT       MOVECH            
+.
+.
+.
+000F STR1       BYTE      C'TEST STRING'    
+001A STR2       RESB      11                
+0025 ZERO       WORD      0                 
+0028 ELEVEN     WORD      11                

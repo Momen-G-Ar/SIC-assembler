@@ -1,21 +1,18 @@
 import helper
-import sys
-
-source_file = sys.argv[1]
-destination_file = sys.argv[2]
-opcode_table = helper.read_opcode_table()
 
 
-def run_pass1():
+def run_pass1(source_file, destination_file):
     '''Simulate the PASS1 in SIC assembler'''
     # Read and Write files
     file = open(str(source_file), 'r')
+    print(destination_file)
     write_file = open(str(destination_file), 'w')
     # Read first line
     line = file.readline()
+    opcode_table = helper.read_opcode_table()
     # Define the needed variables
-    LOCCTR = '0000'
-    START_ADDRESS = ''
+    LOCCTR = '000000'
+    START_ADDRESS = '0000'
     SYBTAB = {}
     PRGLTH = ''
     ERROR = ''
@@ -28,7 +25,8 @@ def run_pass1():
                 line)
             # The start directive
             if opcode == 'START':
-                START_ADDRESS = operand
+                if (operand):
+                    START_ADDRESS = operand
                 PRGNAME = label
                 LOCCTR = START_ADDRESS
                 helper.print_to_intermediate(
@@ -71,14 +69,16 @@ def run_pass1():
                 helper.print_to_intermediate(
                     LOCCTR, label, opcode, operand, write_file)
 
-                PRGLTH = helper.change_from_decimal_to_hex(helper.change_from_hex_to_decimal(
-                    LOCCTR) - helper.change_from_hex_to_decimal(START_ADDRESS))
                 break
         else:
+            write_file.write(line)
             line = file.readline()
             continue
+    PRGLTH = helper.change_from_decimal_to_hex(helper.change_from_hex_to_decimal(
+        LOCCTR) - helper.change_from_hex_to_decimal(START_ADDRESS))
     # Print the needed information
     print('PRGNAME =', PRGNAME)
+    print('START ADDRESS =', START_ADDRESS)
     print('PRGLTH =', PRGLTH)
     print('LOCCTR =', LOCCTR)
     print('SYBTAB:')
@@ -90,11 +90,4 @@ def run_pass1():
               helper.add_end_spaces(key, 10), '|',
               helper.add_end_spaces(value, 4),
               )
-    # Print error if it occurs
-    if ERROR != '':
-        print('Error(s): ')
-        print(ERROR)
-
-
-# run Pass1
-run_pass1()
+    return PRGNAME, PRGLTH, LOCCTR, SYBTAB, ERROR

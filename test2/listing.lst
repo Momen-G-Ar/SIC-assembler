@@ -1,0 +1,16 @@
+1000 OPERAT     START     1000                     
+1000            LDA       ALPHA              00101B
+1003            ADD       INCR               181027
+1006            SUB       ONE                1C1018
+1009            STA       BETA               0C101E
+100C            LDA       GAMMA              001021
+100F            ADD       INCR               181027
+1012            SUB       ONE                1C1018
+1015            STA       DELTA              0C1024
+1018 ONE        WORD      1                  000001
+101B ALPHA      RESW      1                        
+101E BETA       RESW      1                        
+1021 GAMMA      RESW      1                        
+1024 DELTA      RESW      1                        
+1027 INCR       RESW      1                        
+102A            END       FIRST                    
