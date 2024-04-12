@@ -105,23 +105,43 @@ def generate_header_record(PRGNAME: str, START_ADDRESS: str, PRGLTH: str):
         start = '0' + start
     while len(length) < 6:
         length = '0' + length
-    return 'H^' + add_end_spaces(PRGNAME, 6) \
-        + '^' + add_end_spaces(start, 6)\
-        + '^' + add_end_spaces(length, 6)
+    return 'H^' + add_end_spaces(PRGNAME[0:7], 6) \
+        + '^' + add_end_spaces(start, 6) \
+        + '^' + add_end_spaces(length, 6) + '\n'
 
 #######
 
 
-def generate_text_record(PRGNAME: str, START_ADDRESS: str, PRGLTH: str):
-    return 'T^' + add_end_spaces(PRGNAME, 6) \
-        + '^' + add_end_spaces(START_ADDRESS, 6)\
-        + '^' + add_end_spaces(PRGLTH, 6)
+def generate_text_record(locctr: str, length: int, object_code: str):
+    length_in_hex = change_from_decimal_to_hex(length / 2)
+    while len(locctr) < 6:
+        locctr = '0' + locctr
+    return 'T^' + locctr + '^' + length_in_hex[2:4] + '^' + object_code + '\n'
 
 
-def generate_end_record(PRGNAME: str, START_ADDRESS: str, PRGLTH: str):
-    return 'E^' + add_end_spaces(PRGNAME, 6) \
-        + '^' + add_end_spaces(START_ADDRESS, 6)\
-        + '^' + add_end_spaces(PRGLTH, 6)
+def add_to_text_record(text_record: str, object_code: str, write_file: TextIOWrapper, locctr: str, locctr_of_text_record: str):
+    if (len(text_record) + len(object_code) <= 60):
+        text_record += object_code
+    else:
+        line_in_obj = generate_text_record(
+            locctr_of_text_record, len(text_record), text_record)
+        write_file.write(line_in_obj)
+        text_record = object_code
+        locctr_of_text_record = locctr
+    return locctr_of_text_record, text_record
+
+
+def generate_end_record(operand, SYBTAB):
+    if (operand in SYBTAB):
+        START_ADDRESS = SYBTAB[operand]
+    else:
+        START_ADDRESS = ''
+    if (START_ADDRESS != ''):
+        while len(START_ADDRESS) < 6:
+            START_ADDRESS = '0' + START_ADDRESS
+        return 'E^' + START_ADDRESS
+    else:
+        return 'E'
 
 
 def print_to_listing(LOCCTR: str = '', label: str = '', opcode: str = '', operand: str = '', object_code: str = '', write_file: TextIOWrapper = ''):
@@ -135,4 +155,9 @@ def print_to_listing(LOCCTR: str = '', label: str = '', opcode: str = '', operan
 
 
 def get_hex_from_chars(chars: str):
+    hex = ''
     chars = chars[2: -1]
+    for char in chars:
+        ascii = format(ord(char), "x").upper()
+        hex += ascii
+    return hex
