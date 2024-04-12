@@ -12,7 +12,7 @@ if (ERROR1 == ''):
     ERROR2 = pass2.run_pass2(START_ADDRESS, PRGNAME, PRGLTH, LOCCTR,
                              SYBTAB, intermediate_file, object_file)
     if (ERROR2 == ''):
-        print('Done\n')
+        print('Done')
     else:
         print('Error in Pass2: \n', ERROR2)
 else:
