@@ -1,3 +1,6 @@
+.......... ......... ..................
+.       MAIN SUBROUTINE
+.......... ......... ..................
 1000 COPY       START     1000              
 1000 FIRST      STL       RETADR            
 1003 CLOOP      JSUB      RDREC             
@@ -19,6 +22,9 @@
 1033 RETADR     RESW      1                 
 1036 LENGTH     RESW      1                 
 1039 BUFFER     RESB      4096              
+.......... ......... ..................
+.       SUBROUTINE TO READ RECORD INTO BUFFER
+.......... ......... ..................
 2039 RDREC      LDX       ZERO              
 203C            LDA       ZERO              
 203F RLOOP      TD        INPUT             
@@ -33,6 +39,9 @@
 205A            RSUB                        
 205D INPUT      BYTE      X'F1'             
 205E MAXLEN     WORD      4096              
+.......... ......... ..................
+.       SUBROUTINE TO WRITE RECORD FROM BUFFER
+.......... ......... ..................
 2061 WRREC      LDX       ZERO              
 2064 WLOOP      TD        OUTPUT            
 2067            JEQ       WLOOP             
