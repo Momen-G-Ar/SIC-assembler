@@ -1,4 +1,4 @@
-import helper as helper
+import helper
 
 
 def run_pass2(PRGNAME: str, PRGLTH: str, LOCCTR: str, SYBTAB: dict, source_file=source_file, destination_file=destination_file):
